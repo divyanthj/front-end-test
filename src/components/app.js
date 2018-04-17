@@ -8,6 +8,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isSorted : false,
       isLoading : true,
       pizzas : []
     };
@@ -27,17 +28,15 @@ class App extends Component {
   }
 
   activateFilter(event) {
-    const {displayedPizzas, pizzas} = this.state;
-    this.setState({
-      displayedPizzas : pizzas.filter((pizza) => {
-        return pizza.toLowerCase().indexOf(event.target.value.toLowerCase()) > -1;
-      })
+    const {displayedPizzas, pizzas, isSorted} = this.state;
+    
+    let result = pizzas.filter((pizza) => {
+      return pizza.toLowerCase().indexOf(event.target.value.toLowerCase()) > -1;
     });
-  }
 
-  sortAscending() {
-    const {displayedPizzas, pizzas} = this.state;
-    let result = displayedPizzas.sort();
+    if(isSorted) {
+      result = result.sort().reverse();
+    }
     this.setState({
       displayedPizzas : result
     });
@@ -48,6 +47,7 @@ class App extends Component {
     let result = displayedPizzas.sort();
     result.reverse();
     this.setState({
+      isSorted : true,
       displayedPizzas : result
     });
   }
@@ -68,8 +68,7 @@ class App extends Component {
       return (
         <div>
           <input placeholder='Filter' onChange={this.activateFilter.bind(this)}></input>
-          <button onClick={this.sortAscending.bind(this)}>Sort Ascending</button>
-          <button onClick={this.sortDescending.bind(this)}>Sort Descending</button>
+          <button onClick={this.sortDescending.bind(this)}>Sort</button>
           <ul>{pizzaList}</ul>
         </div>
 
