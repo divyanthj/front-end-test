@@ -2,7 +2,7 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import {expect} from 'code'
 import sinon from 'sinon'
-import App from '../src/components/App'
+import App from '../../src/components/App'
 
 const overrideProps = (props) => {
     return {
@@ -31,11 +31,23 @@ describe('App', () => {
     it('Sort method works correctly', () => {
       let that = component.instance();
       that.setState({
-        pizzas : ["Bar", "Foo"]
+        displayedPizzas : ["Bar", "Foo"]
       });
       that.sortDescending(that);
-      expect(that.displayedPizzas[0]).to.equal("Foo");
+      expect(that.state.displayedPizzas[0]).to.equal("Foo");
+    })
 
+    it('Filter method works correctly', () => {
+      let that = component.instance();
+      that.setState({
+        pizzas : ["Bar", "Foo"]
+      });
+      that.activateFilter({
+        target : {
+          value : "f"
+        }
+      });
+      expect(that.state.displayedPizzas[0]).to.equal("Foo");
     })
 
 
